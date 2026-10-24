@@ -1,0 +1,468 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Life in the UK – Keywords Cards</title>
+  <style>
+    :root {
+      --bg: #f5f0e6;
+      --card-bg: #fffdf8;
+      --text: #1a1a1a;
+      --muted: #5c5c5c;
+      --accent: #1e3a2f;
+      --accent-light: #2d5a47;
+      --border: #d9d0c0;
+      --shadow: 0 4px 12px rgba(0,0,0,0.08);
+      --radius: 12px;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.5;
+      min-height: 100vh;
+    }
+
+    header {
+      background: var(--accent);
+      color: #f5f0e6;
+      padding: 1.25rem 1.5rem;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+    }
+
+    header h1 {
+      font-size: 1.35rem;
+      font-weight: 600;
+      margin-bottom: 0.25rem;
+    }
+
+    header p {
+      font-size: 0.85rem;
+      opacity: 0.85;
+    }
+
+    .controls {
+      max-width: 1100px;
+      margin: 1.25rem auto 0;
+      padding: 0 1rem;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.75rem;
+      align-items: center;
+    }
+
+    .search-box {
+      flex: 1;
+      min-width: 200px;
+      position: relative;
+    }
+
+    .search-box input {
+      width: 100%;
+      padding: 0.65rem 1rem 0.65rem 2.4rem;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      background: var(--card-bg);
+      font-size: 0.95rem;
+      outline: none;
+    }
+
+    .search-box input:focus {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 3px rgba(30,58,47,0.15);
+    }
+
+    .search-box::before {
+      content: "⌕";
+      position: absolute;
+      left: 0.85rem;
+      top: 50%;
+      transform: translateY(-50%);
+      color: var(--muted);
+      font-size: 1.1rem;
+    }
+
+    .filters {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.4rem;
+    }
+
+    .filter-btn {
+      padding: 0.45rem 0.85rem;
+      border: 1px solid var(--border);
+      border-radius: 999px;
+      background: var(--card-bg);
+      font-size: 0.85rem;
+      cursor: pointer;
+      transition: all 0.15s;
+      color: var(--text);
+    }
+
+    .filter-btn:hover { border-color: var(--accent); }
+
+    .filter-btn.active {
+      background: var(--accent);
+      color: #f5f0e6;
+      border-color: var(--accent);
+    }
+
+    .stats {
+      font-size: 0.85rem;
+      color: var(--muted);
+      margin-left: auto;
+    }
+
+    main {
+      max-width: 1100px;
+      margin: 1.5rem auto 3rem;
+      padding: 0 1rem;
+    }
+
+    .chapter-section {
+      margin-bottom: 2.5rem;
+    }
+
+    .chapter-section h2 {
+      font-size: 1.15rem;
+      color: var(--accent);
+      margin-bottom: 0.85rem;
+      padding-bottom: 0.4rem;
+      border-bottom: 2px solid var(--border);
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .chapter-section h2 span {
+      font-size: 0.8rem;
+      font-weight: 500;
+      background: var(--accent);
+      color: #f5f0e6;
+      padding: 0.15rem 0.5rem;
+      border-radius: 6px;
+    }
+
+    .cards-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+      gap: 1rem;
+    }
+
+    .card {
+      perspective: 1000px;
+      height: 160px;
+      cursor: pointer;
+    }
+
+    .card-inner {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      transition: transform 0.45s;
+      transform-style: preserve-3d;
+    }
+
+    .card.flipped .card-inner {
+      transform: rotateY(180deg);
+    }
+
+    .card-front, .card-back {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      backface-visibility: hidden;
+      border-radius: var(--radius);
+      border: 1px solid var(--border);
+      background: var(--card-bg);
+      box-shadow: var(--shadow);
+      padding: 1rem 1.1rem;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+
+    .card-back {
+      transform: rotateY(180deg);
+      background: #f8f4eb;
+    }
+
+    .card-front .keyword {
+      font-size: 1.1rem;
+      font-weight: 650;
+      color: var(--accent);
+      margin-bottom: 0.35rem;
+    }
+
+    .card-front .hint {
+      font-size: 0.8rem;
+      color: var(--muted);
+    }
+
+    .card-back .association {
+      font-size: 0.95rem;
+      font-weight: 500;
+      margin-bottom: 0.4rem;
+      line-height: 1.4;
+    }
+
+    .card-back .note {
+      font-size: 0.82rem;
+      color: var(--muted);
+      line-height: 1.4;
+    }
+
+    .tag {
+      display: inline-block;
+      font-size: 0.7rem;
+      padding: 0.12rem 0.4rem;
+      border-radius: 4px;
+      background: #e8e0d0;
+      color: var(--muted);
+      margin-top: 0.4rem;
+      align-self: flex-start;
+    }
+
+    .empty-state {
+      text-align: center;
+      padding: 3rem 1rem;
+      color: var(--muted);
+      display: none;
+    }
+
+    footer {
+      text-align: center;
+      padding: 1.5rem;
+      font-size: 0.8rem;
+      color: var(--muted);
+      border-top: 1px solid var(--border);
+    }
+
+    @media (max-width: 600px) {
+      header h1 { font-size: 1.15rem; }
+      .cards-grid { grid-template-columns: 1fr; }
+      .stats { width: 100%; margin-left: 0; margin-top: 0.25rem; }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Life in the UK – Keywords Cards</h1>
+    <p>Click a card to flip · Search or filter by chapter · English first (exam style)</p>
+  </header>
+
+  <div class="controls">
+    <div class="search-box">
+      <input type="search" id="search" placeholder="Search keywords, people, dates…" autocomplete="off" />
+    </div>
+    <div class="filters" id="filters">
+      <button class="filter-btn active" data-chapter="all">All</button>
+      <button class="filter-btn" data-chapter="2">Ch.2 UK</button>
+      <button class="filter-btn" data-chapter="3">Ch.3 History</button>
+      <button class="filter-btn" data-chapter="4">Ch.4 Modern</button>
+      <button class="filter-btn" data-chapter="5">Ch.5 Gov</button>
+    </div>
+    <div class="stats" id="stats"></div>
+  </div>
+
+  <main id="main">
+    <!-- Sections will be generated by JS -->
+  </main>
+
+  <div class="empty-state" id="empty">No matching cards. Try another search.</div>
+
+  <footer>
+    Based on official Life in the United Kingdom handbook (3rd edition) · For revision only · Not affiliated with Home Office
+  </footer>
+
+  <script>
+    const cardsData = [
+      // ========== Chapter 2: What is the UK? ==========
+      { chapter: 2, keyword: "Great Britain", association: "England + Scotland + Wales", note: "The island. Does NOT include Northern Ireland." },
+      { chapter: 2, keyword: "United Kingdom", association: "Great Britain + Northern Ireland", note: "Full name: United Kingdom of Great Britain and Northern Ireland." },
+      { chapter: 2, keyword: "England", association: "St George · 23 April · Rose · London", note: "Patron saint, national day, emblem, capital." },
+      { chapter: 2, keyword: "Scotland", association: "St Andrew · 30 November · Thistle · Edinburgh", note: "Also Hogmanay (31 December New Year celebration)." },
+      { chapter: 2, keyword: "Wales", association: "St David · 1 March · Daffodil / Leek · Cardiff", note: "Patron saint, national day, emblems, capital." },
+      { chapter: 2, keyword: "Northern Ireland", association: "St Patrick · 17 March · Shamrock · Belfast", note: "Patron saint, national day, emblem, capital." },
+      { chapter: 2, keyword: "Union Flag", association: "St George + St Andrew + St Patrick crosses", note: "Welsh dragon is not on the flag." },
+      { chapter: 2, keyword: "Ben Nevis", association: "Highest mountain in the UK", note: "Located in Scotland (1,345 m)." },
+      { chapter: 2, keyword: "River Severn", association: "Longest river in the UK", note: "Thames is the second longest." },
+      { chapter: 2, keyword: "Crown Dependencies", association: "Channel Islands + Isle of Man", note: "Linked to the Crown but NOT part of the UK." },
+
+      // ========== Chapter 3: A Long and Illustrious History ==========
+      { chapter: 3, keyword: "1066", association: "Battle of Hastings · Norman Conquest", note: "William the Conqueror defeats King Harold. Last successful invasion of England." },
+      { chapter: 3, keyword: "1215", association: "Magna Carta", note: "King John forced to sign. King is no longer above the law." },
+      { chapter: 3, keyword: "1314", association: "Battle of Bannockburn", note: "Robert the Bruce defeats the English. Scotland remains independent." },
+      { chapter: 3, keyword: "1485", association: "Battle of Bosworth · start of Tudors", note: "Henry VII becomes first Tudor king. Ends Wars of the Roses." },
+      { chapter: 3, keyword: "Henry VIII", association: "Six wives · broke with Rome · Church of England", note: "Wives order: divorced, beheaded, died, divorced, beheaded, survived." },
+      { chapter: 3, keyword: "Elizabeth I", association: "Defeated Spanish Armada (1588)", note: "Never married. Golden age of English culture (Shakespeare)." },
+      { chapter: 3, keyword: "1603", association: "Union of the Crowns", note: "James VI of Scotland becomes James I of England. One king, two crowns." },
+      { chapter: 3, keyword: "1605", association: "Gunpowder Plot", note: "Guy Fawkes tried to blow up Parliament. Origin of Bonfire Night." },
+      { chapter: 3, keyword: "1649", association: "Charles I executed", note: "England becomes a republic (Commonwealth) under Oliver Cromwell." },
+      { chapter: 3, keyword: "1689", association: "Bill of Rights", note: "Limits royal power. Confirms Parliament’s authority." },
+      { chapter: 3, keyword: "1707", association: "Act of Union (England + Scotland)", note: "Creates the Kingdom of Great Britain." },
+      { chapter: 3, keyword: "1801", association: "Act of Union (with Ireland)", note: "Creates the United Kingdom of Great Britain and Ireland." },
+      { chapter: 3, keyword: "1832", association: "Great Reform Act", note: "Expanded the number of male voters and reformed constituencies." },
+      { chapter: 3, keyword: "Emmeline Pankhurst", association: "Leader of the suffragettes", note: "Fought for women’s right to vote." },
+      { chapter: 3, keyword: "1918", association: "Women over 30 (with property) get the vote", note: "First step towards equal voting rights for women." },
+      { chapter: 3, keyword: "1928", association: "Equal voting rights for women", note: "All women over 21 get the same voting rights as men." },
+      { chapter: 3, keyword: "Winston Churchill", association: "Prime Minister during WWII", note: "Famous wartime speeches. PM again 1951–55." },
+      { chapter: 3, keyword: "Margaret Thatcher", association: "First female Prime Minister (1979–1990)", note: "Longest-serving PM of the 20th century. Known as the Iron Lady." },
+
+      // ========== Chapter 4: A Modern, Thriving Society ==========
+      // Scientists & Inventors
+      { chapter: 4, keyword: "Isaac Newton", association: "Laws of motion and gravity", note: "One of the most important figures in the Scientific Revolution." },
+      { chapter: 4, keyword: "Charles Darwin", association: "Theory of evolution by natural selection", note: "Author of On the Origin of Species (1859)." },
+      { chapter: 4, keyword: "Alexander Fleming", association: "Discovered penicillin (1928)", note: "Scottish doctor. Revolutionised medicine." },
+      { chapter: 4, keyword: "Tim Berners-Lee", association: "Invented the World Wide Web (1989)", note: "While working at CERN." },
+      { chapter: 4, keyword: "John Logie Baird", association: "Invented the television (1920s)", note: "Scottish engineer. First TV broadcast between London and Glasgow." },
+      { chapter: 4, keyword: "James Watt", association: "Improved the steam engine", note: "Key figure of the Industrial Revolution." },
+      { chapter: 4, keyword: "Alan Turing", association: "Codebreaking (Enigma) + computing pioneer", note: "Worked at Bletchley Park during WWII." },
+      { chapter: 4, keyword: "Isambard Kingdom Brunel", association: "Engineer – bridges, railways, ships", note: "Great Western Railway, SS Great Britain, Clifton Suspension Bridge." },
+      { chapter: 4, keyword: "Florence Nightingale", association: "Founder of modern nursing", note: "Famous for work in the Crimean War." },
+      { chapter: 4, keyword: "Concorde", association: "Britain + France · first flew 1969", note: "World’s only supersonic passenger aircraft. Retired 2003." },
+      { chapter: 4, keyword: "Francis Crick", association: "Co-discovered structure of DNA (1953)", note: "With James Watson (and others) at Cambridge." },
+      { chapter: 4, keyword: "Sir Frank Whittle", association: "Invented the jet engine", note: "British engineer, 1930s–40s." },
+
+      // Sports & Athletes
+      { chapter: 4, keyword: "1966 World Cup", association: "England won the football World Cup", note: "Captain: Bobby Moore. Only time England have won it." },
+      { chapter: 4, keyword: "Bobby Moore", association: "England football captain 1966", note: "Led England to World Cup victory." },
+      { chapter: 4, keyword: "Sir Roger Bannister", association: "First man to run a mile under 4 minutes (1954)", note: "Historic athletics achievement." },
+      { chapter: 4, keyword: "Sir Andy Murray", association: "Scottish tennis player · Wimbledon 2013 & 2016", note: "Also Olympic gold and US Open champion." },
+      { chapter: 4, keyword: "Baroness Tanni Grey-Thompson", association: "Paralympian · 16 medals (11 gold)", note: "Also won the London Marathon six times." },
+      { chapter: 4, keyword: "Sir Ian Botham", association: "England cricket all-rounder", note: "Held many batting and bowling records." },
+      { chapter: 4, keyword: "Sir Jackie Stewart", association: "Scottish Formula 1 driver · 3× world champion", note: "One of Britain’s most successful racing drivers." },
+      { chapter: 4, keyword: "Olympics hosted by UK", association: "1908, 1948 and 2012 (London)", note: "2012: Team GB finished 3rd in the medal table." },
+      { chapter: 4, keyword: "Wimbledon", association: "Oldest tennis tournament in the world (1877)", note: "Held in London every summer." },
+      { chapter: 4, keyword: "The Ashes", association: "Cricket series: England vs Australia", note: "Most famous cricket competition involving England." },
+      { chapter: 4, keyword: "Six Nations", association: "Rugby Union championship", note: "England, Scotland, Wales, Ireland, France, Italy." },
+
+      // Culture & Arts
+      { chapter: 4, keyword: "William Shakespeare", association: "Playwright · Romeo and Juliet, Hamlet, Macbeth", note: "1564–1616. Globe Theatre. Stratford-upon-Avon." },
+      { chapter: 4, keyword: "Jane Austen", association: "Novelist · Pride and Prejudice", note: "Also Sense and Sensibility. Early 19th century." },
+      { chapter: 4, keyword: "Charles Dickens", association: "Victorian novelist · Oliver Twist, A Christmas Carol", note: "Wrote about social conditions in industrial Britain." },
+      { chapter: 4, keyword: "Robert Burns", association: "Scottish national poet · Auld Lang Syne", note: "Known as “the Bard”." },
+      { chapter: 4, keyword: "Sir Arthur Conan Doyle", association: "Creator of Sherlock Holmes", note: "Famous detective stories." },
+      { chapter: 4, keyword: "J.K. Rowling", association: "Harry Potter series", note: "One of the world’s best-selling authors." },
+      { chapter: 4, keyword: "The Beatles", association: "Most famous British pop/rock band", note: "From Liverpool. Global cultural impact in the 1960s." },
+
+      // ========== Chapter 5: The UK Government, the Law and Your Role ==========
+      { chapter: 5, keyword: "House of Commons", association: "650 elected MPs · holds real power", note: "Elected chamber of Parliament." },
+      { chapter: 5, keyword: "House of Lords", association: "Appointed members · revises legislation", note: "Not elected. Includes life peers, bishops, etc." },
+      { chapter: 5, keyword: "Prime Minister", association: "Leader of the party with majority in Commons", note: "Head of the UK government." },
+      { chapter: 5, keyword: "Speaker", association: "Chairs debates in the House of Commons", note: "Must remain politically neutral." },
+      { chapter: 5, keyword: "Devolution (1999)", association: "Scottish Parliament, Senedd (Wales), NI Assembly", note: "Transfer of powers from Westminster to the nations." },
+      { chapter: 5, keyword: "Senedd", association: "Welsh Parliament", note: "Devolved legislature for Wales (established 1999)." },
+      { chapter: 5, keyword: "Jury", association: "12 members in a Crown Court", note: "Decide guilt or innocence in serious criminal cases." },
+      { chapter: 5, keyword: "Voting age", association: "18 years old", note: "Minimum age to vote in UK elections." },
+      { chapter: 5, keyword: "Fundamental principles", association: "Democracy · Rule of law · Individual liberty · Tolerance · Participation", note: "Core British values (often remembered as DRIT-P)." },
+    ];
+
+    // State
+    let currentChapter = "all";
+    let searchTerm = "";
+
+    const mainEl = document.getElementById("main");
+    const statsEl = document.getElementById("stats");
+    const emptyEl = document.getElementById("empty");
+    const searchInput = document.getElementById("search");
+
+    const chapterTitles = {
+      2: "Chapter 2 · What is the UK?",
+      3: "Chapter 3 · A Long and Illustrious History",
+      4: "Chapter 4 · A Modern, Thriving Society",
+      5: "Chapter 5 · The UK Government, the Law and Your Role"
+    };
+
+    function render() {
+      const filtered = cardsData.filter(card => {
+        const matchChapter = currentChapter === "all" || card.chapter === Number(currentChapter);
+        const q = searchTerm.toLowerCase().trim();
+        const matchSearch = !q ||
+          card.keyword.toLowerCase().includes(q) ||
+          card.association.toLowerCase().includes(q) ||
+          (card.note && card.note.toLowerCase().includes(q));
+        return matchChapter && matchSearch;
+      });
+
+      statsEl.textContent = `${filtered.length} card${filtered.length !== 1 ? "s" : ""}`;
+
+      if (filtered.length === 0) {
+        mainEl.innerHTML = "";
+        emptyEl.style.display = "block";
+        return;
+      }
+      emptyEl.style.display = "none";
+
+      // Group by chapter
+      const byChapter = {};
+      filtered.forEach(c => {
+        if (!byChapter[c.chapter]) byChapter[c.chapter] = [];
+        byChapter[c.chapter].push(c);
+      });
+
+      let html = "";
+      Object.keys(byChapter).sort((a,b) => a - b).forEach(ch => {
+        const list = byChapter[ch];
+        html += `
+          <section class="chapter-section" data-chapter="${ch}">
+            <h2>${chapterTitles[ch]} <span>${list.length}</span></h2>
+            <div class="cards-grid">
+              ${list.map(card => `
+                <div class="card" data-keyword="${card.keyword}">
+                  <div class="card-inner">
+                    <div class="card-front">
+                      <div class="keyword">${card.keyword}</div>
+                      <div class="hint">Tap to reveal</div>
+                      <span class="tag">Ch.${card.chapter}</span>
+                    </div>
+                    <div class="card-back">
+                      <div class="association">${card.association}</div>
+                      <div class="note">${card.note || ""}</div>
+                    </div>
+                  </div>
+                </div>
+              `).join("")}
+            </div>
+          </section>
+        `;
+      });
+
+      mainEl.innerHTML = html;
+
+      // Attach flip listeners
+      document.querySelectorAll(".card").forEach(card => {
+        card.addEventListener("click", () => {
+          card.classList.toggle("flipped");
+        });
+      });
+    }
+
+    // Filters
+    document.getElementById("filters").addEventListener("click", e => {
+      if (e.target.classList.contains("filter-btn")) {
+        document.querySelectorAll(".filter-btn").forEach(b => b.classList.remove("active"));
+        e.target.classList.add("active");
+        currentChapter = e.target.dataset.chapter;
+        render();
+      }
+    });
+
+    // Search
+    searchInput.addEventListener("input", e => {
+      searchTerm = e.target.value;
+      render();
+    });
+
+    // Initial render
+    render();
+  </script>
+</body>
+</html>
