@@ -3,465 +3,313 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Life in the UK – Keywords Cards</title>
+  <title>Life in the UK – Thematic Keywords</title>
+  <script src="https://cdn.tailwindcss.com"></script>
   <style>
-    :root {
-      --bg: #f5f0e6;
-      --card-bg: #fffdf8;
-      --text: #1a1a1a;
-      --muted: #5c5c5c;
-      --accent: #1e3a2f;
-      --accent-light: #2d5a47;
-      --border: #d9d0c0;
-      --shadow: 0 4px 12px rgba(0,0,0,0.08);
-      --radius: 12px;
-    }
-
-    * { box-sizing: border-box; margin: 0; padding: 0; }
-
-    body {
-      font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
-      background: var(--bg);
-      color: var(--text);
-      line-height: 1.5;
-      min-height: 100vh;
-    }
-
-    header {
-      background: var(--accent);
-      color: #f5f0e6;
-      padding: 1.25rem 1.5rem;
-      position: sticky;
-      top: 0;
-      z-index: 100;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.15);
-    }
-
-    header h1 {
-      font-size: 1.35rem;
-      font-weight: 600;
-      margin-bottom: 0.25rem;
-    }
-
-    header p {
-      font-size: 0.85rem;
-      opacity: 0.85;
-    }
-
-    .controls {
-      max-width: 1100px;
-      margin: 1.25rem auto 0;
-      padding: 0 1rem;
-      display: flex;
-      flex-wrap: wrap;
-      gap: 0.75rem;
-      align-items: center;
-    }
-
-    .search-box {
-      flex: 1;
-      min-width: 200px;
-      position: relative;
-    }
-
-    .search-box input {
-      width: 100%;
-      padding: 0.65rem 1rem 0.65rem 2.4rem;
-      border: 1px solid var(--border);
-      border-radius: 8px;
-      background: var(--card-bg);
-      font-size: 0.95rem;
-      outline: none;
-    }
-
-    .search-box input:focus {
-      border-color: var(--accent);
-      box-shadow: 0 0 0 3px rgba(30,58,47,0.15);
-    }
-
-    .search-box::before {
-      content: "⌕";
-      position: absolute;
-      left: 0.85rem;
-      top: 50%;
-      transform: translateY(-50%);
-      color: var(--muted);
-      font-size: 1.1rem;
-    }
-
-    .filters {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 0.4rem;
-    }
-
-    .filter-btn {
-      padding: 0.45rem 0.85rem;
-      border: 1px solid var(--border);
-      border-radius: 999px;
-      background: var(--card-bg);
-      font-size: 0.85rem;
-      cursor: pointer;
-      transition: all 0.15s;
-      color: var(--text);
-    }
-
-    .filter-btn:hover { border-color: var(--accent); }
-
-    .filter-btn.active {
-      background: var(--accent);
-      color: #f5f0e6;
-      border-color: var(--accent);
-    }
-
-    .stats {
-      font-size: 0.85rem;
-      color: var(--muted);
-      margin-left: auto;
-    }
-
-    main {
-      max-width: 1100px;
-      margin: 1.5rem auto 3rem;
-      padding: 0 1rem;
-    }
-
-    .chapter-section {
-      margin-bottom: 2.5rem;
-    }
-
-    .chapter-section h2 {
-      font-size: 1.15rem;
-      color: var(--accent);
-      margin-bottom: 0.85rem;
-      padding-bottom: 0.4rem;
-      border-bottom: 2px solid var(--border);
-      display: flex;
-      align-items: center;
-      gap: 0.5rem;
-    }
-
-    .chapter-section h2 span {
-      font-size: 0.8rem;
-      font-weight: 500;
-      background: var(--accent);
-      color: #f5f0e6;
-      padding: 0.15rem 0.5rem;
-      border-radius: 6px;
-    }
-
-    .cards-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
-      gap: 1rem;
-    }
-
-    .card {
-      perspective: 1000px;
-      height: 160px;
-      cursor: pointer;
-    }
-
-    .card-inner {
-      position: relative;
-      width: 100%;
-      height: 100%;
-      transition: transform 0.45s;
-      transform-style: preserve-3d;
-    }
-
-    .card.flipped .card-inner {
-      transform: rotateY(180deg);
-    }
-
-    .card-front, .card-back {
-      position: absolute;
-      width: 100%;
-      height: 100%;
-      backface-visibility: hidden;
-      border-radius: var(--radius);
-      border: 1px solid var(--border);
-      background: var(--card-bg);
-      box-shadow: var(--shadow);
-      padding: 1rem 1.1rem;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-    }
-
-    .card-back {
-      transform: rotateY(180deg);
-      background: #f8f4eb;
-    }
-
-    .card-front .keyword {
-      font-size: 1.1rem;
-      font-weight: 650;
-      color: var(--accent);
-      margin-bottom: 0.35rem;
-    }
-
-    .card-front .hint {
-      font-size: 0.8rem;
-      color: var(--muted);
-    }
-
-    .card-back .association {
-      font-size: 0.95rem;
-      font-weight: 500;
-      margin-bottom: 0.4rem;
-      line-height: 1.4;
-    }
-
-    .card-back .note {
-      font-size: 0.82rem;
-      color: var(--muted);
-      line-height: 1.4;
-    }
-
-    .tag {
-      display: inline-block;
-      font-size: 0.7rem;
-      padding: 0.12rem 0.4rem;
-      border-radius: 4px;
-      background: #e8e0d0;
-      color: var(--muted);
-      margin-top: 0.4rem;
-      align-self: flex-start;
-    }
-
-    .empty-state {
-      text-align: center;
-      padding: 3rem 1rem;
-      color: var(--muted);
-      display: none;
-    }
-
-    footer {
-      text-align: center;
-      padding: 1.5rem;
-      font-size: 0.8rem;
-      color: var(--muted);
-      border-top: 1px solid var(--border);
-    }
-
-    @media (max-width: 600px) {
-      header h1 { font-size: 1.15rem; }
-      .cards-grid { grid-template-columns: 1fr; }
-      .stats { width: 100%; margin-left: 0; margin-top: 0.25rem; }
-    }
+    body { background: #f7f3eb; font-family: system-ui, -apple-system, sans-serif; }
+    .theme-block { background: #fffdf8; border: 1px solid #e5e0d5; border-radius: 12px; }
+    .key-point { background: #eef4fb; border-left: 4px solid #3b82f6; }
+    .item-row { border-bottom: 1px solid #f0ebe3; }
+    .item-row:last-child { border-bottom: none; }
+    .extra-label { font-size: 0.7rem; color: #64748b; letter-spacing: 0.05em; text-transform: uppercase; margin-top: 0.75rem; padding-top: 0.5rem; border-top: 2px dashed #cbd5e1; }
+    .sticky-bar { position: sticky; top: 0; z-index: 50; }
   </style>
 </head>
-<body>
-  <header>
-    <h1>Life in the UK – Keywords Cards</h1>
-    <p>Click a card to flip · Search or filter by chapter · English first (exam style)</p>
-  </header>
-
-  <div class="controls">
-    <div class="search-box">
-      <input type="search" id="search" placeholder="Search keywords, people, dates…" autocomplete="off" />
-    </div>
-    <div class="filters" id="filters">
-      <button class="filter-btn active" data-chapter="all">All</button>
-      <button class="filter-btn" data-chapter="2">Ch.2 UK</button>
-      <button class="filter-btn" data-chapter="3">Ch.3 History</button>
-      <button class="filter-btn" data-chapter="4">Ch.4 Modern</button>
-      <button class="filter-btn" data-chapter="5">Ch.5 Gov</button>
-    </div>
-    <div class="stats" id="stats"></div>
+<body class="min-h-screen text-gray-800">
+  <!-- Sticky top bar -->
+  <div class="sticky-bar bg-[#1e3a5f] text-white text-center py-2 px-3 shadow">
+    <a href="https://domicch.github.io/life-in-uk/" target="_blank" rel="noopener"
+       class="text-sm font-medium underline underline-offset-2 hover:text-blue-200">
+      Life in the UK Test
+    </a>
   </div>
 
-  <main id="main">
-    <!-- Sections will be generated by JS -->
-  </main>
+  <header class="bg-[#1e3a5f] text-white py-4 px-4 text-center">
+    <h1 class="text-xl sm:text-2xl font-bold">Life in the UK – Thematic Keywords</h1>
+    <p class="text-sm opacity-90 mt-1">主題關聯 · 一眼睇晒 · 考試常問重點</p>
+  </header>
 
-  <div class="empty-state" id="empty">No matching cards. Try another search.</div>
+  <div class="max-w-3xl mx-auto px-3 py-5">
+    <input id="search" type="search" placeholder="搜尋主題、人物、日期…" 
+           class="w-full px-4 py-2.5 rounded-lg border border-gray-300 shadow-sm mb-5 focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm" />
 
-  <footer>
-    Based on official Life in the United Kingdom handbook (3rd edition) · For revision only · Not affiliated with Home Office
+    <div class="flex flex-wrap gap-2 mb-6 text-sm" id="filters">
+      <button data-filter="all" class="filter-btn active px-3 py-1 rounded-full bg-[#1e3a5f] text-white">全部</button>
+      <button data-filter="nations" class="filter-btn px-3 py-1 rounded-full bg-white border">四國</button>
+      <button data-filter="romans" class="filter-btn px-3 py-1 rounded-full bg-white border">羅馬</button>
+      <button data-filter="tudors" class="filter-btn px-3 py-1 rounded-full bg-white border">Henry VIII</button>
+      <button data-filter="civilwar" class="filter-btn px-3 py-1 rounded-full bg-white border">內戰</button>
+      <button data-filter="votes" class="filter-btn px-3 py-1 rounded-full bg-white border">婦女投票</button>
+      <button data-filter="science" class="filter-btn px-3 py-1 rounded-full bg-white border">科學家</button>
+      <button data-filter="sport" class="filter-btn px-3 py-1 rounded-full bg-white border">運動</button>
+      <button data-filter="culture" class="filter-btn px-3 py-1 rounded-full bg-white border">文化節日</button>
+      <button data-filter="gov" class="filter-btn px-3 py-1 rounded-full bg-white border">政府法律</button>
+      <button data-filter="history" class="filter-btn px-3 py-1 rounded-full bg-white border">其他歷史</button>
+      <button data-filter="values" class="filter-btn px-3 py-1 rounded-full bg-white border">價值觀</button>
+    </div>
+
+    <main id="main" class="space-y-6"></main>
+    <div id="empty" class="hidden text-center py-16 text-gray-500">冇搵到相關內容</div>
+  </div>
+
+  <footer class="text-center text-xs text-gray-500 py-8 px-4">
+    Based on official handbook + high-frequency items from 18 mock tests · For personal revision only
   </footer>
 
   <script>
-    const cardsData = [
-      // ========== Chapter 2: What is the UK? ==========
-      { chapter: 2, keyword: "Great Britain", association: "England + Scotland + Wales", note: "The island. Does NOT include Northern Ireland." },
-      { chapter: 2, keyword: "United Kingdom", association: "Great Britain + Northern Ireland", note: "Full name: United Kingdom of Great Britain and Northern Ireland." },
-      { chapter: 2, keyword: "England", association: "St George · 23 April · Rose · London", note: "Patron saint, national day, emblem, capital." },
-      { chapter: 2, keyword: "Scotland", association: "St Andrew · 30 November · Thistle · Edinburgh", note: "Also Hogmanay (31 December New Year celebration)." },
-      { chapter: 2, keyword: "Wales", association: "St David · 1 March · Daffodil / Leek · Cardiff", note: "Patron saint, national day, emblems, capital." },
-      { chapter: 2, keyword: "Northern Ireland", association: "St Patrick · 17 March · Shamrock · Belfast", note: "Patron saint, national day, emblem, capital." },
-      { chapter: 2, keyword: "Union Flag", association: "St George + St Andrew + St Patrick crosses", note: "Welsh dragon is not on the flag." },
-      { chapter: 2, keyword: "Ben Nevis", association: "Highest mountain in the UK", note: "Located in Scotland (1,345 m)." },
-      { chapter: 2, keyword: "River Severn", association: "Longest river in the UK", note: "Thames is the second longest." },
-      { chapter: 2, keyword: "Crown Dependencies", association: "Channel Islands + Isle of Man", note: "Linked to the Crown but NOT part of the UK." },
-
-      // ========== Chapter 3: A Long and Illustrious History ==========
-      { chapter: 3, keyword: "1066", association: "Battle of Hastings · Norman Conquest", note: "William the Conqueror defeats King Harold. Last successful invasion of England." },
-      { chapter: 3, keyword: "1215", association: "Magna Carta", note: "King John forced to sign. King is no longer above the law." },
-      { chapter: 3, keyword: "1314", association: "Battle of Bannockburn", note: "Robert the Bruce defeats the English. Scotland remains independent." },
-      { chapter: 3, keyword: "1485", association: "Battle of Bosworth · start of Tudors", note: "Henry VII becomes first Tudor king. Ends Wars of the Roses." },
-      { chapter: 3, keyword: "Henry VIII", association: "Six wives · broke with Rome · Church of England", note: "Wives order: divorced, beheaded, died, divorced, beheaded, survived." },
-      { chapter: 3, keyword: "Elizabeth I", association: "Defeated Spanish Armada (1588)", note: "Never married. Golden age of English culture (Shakespeare)." },
-      { chapter: 3, keyword: "1603", association: "Union of the Crowns", note: "James VI of Scotland becomes James I of England. One king, two crowns." },
-      { chapter: 3, keyword: "1605", association: "Gunpowder Plot", note: "Guy Fawkes tried to blow up Parliament. Origin of Bonfire Night." },
-      { chapter: 3, keyword: "1649", association: "Charles I executed", note: "England becomes a republic (Commonwealth) under Oliver Cromwell." },
-      { chapter: 3, keyword: "1689", association: "Bill of Rights", note: "Limits royal power. Confirms Parliament’s authority." },
-      { chapter: 3, keyword: "1707", association: "Act of Union (England + Scotland)", note: "Creates the Kingdom of Great Britain." },
-      { chapter: 3, keyword: "1801", association: "Act of Union (with Ireland)", note: "Creates the United Kingdom of Great Britain and Ireland." },
-      { chapter: 3, keyword: "1832", association: "Great Reform Act", note: "Expanded the number of male voters and reformed constituencies." },
-      { chapter: 3, keyword: "Emmeline Pankhurst", association: "Leader of the suffragettes", note: "Fought for women’s right to vote." },
-      { chapter: 3, keyword: "1918", association: "Women over 30 (with property) get the vote", note: "First step towards equal voting rights for women." },
-      { chapter: 3, keyword: "1928", association: "Equal voting rights for women", note: "All women over 21 get the same voting rights as men." },
-      { chapter: 3, keyword: "Winston Churchill", association: "Prime Minister during WWII", note: "Famous wartime speeches. PM again 1951–55." },
-      { chapter: 3, keyword: "Margaret Thatcher", association: "First female Prime Minister (1979–1990)", note: "Longest-serving PM of the 20th century. Known as the Iron Lady." },
-
-      // ========== Chapter 4: A Modern, Thriving Society ==========
-      // Scientists & Inventors
-      { chapter: 4, keyword: "Isaac Newton", association: "Laws of motion and gravity", note: "One of the most important figures in the Scientific Revolution." },
-      { chapter: 4, keyword: "Charles Darwin", association: "Theory of evolution by natural selection", note: "Author of On the Origin of Species (1859)." },
-      { chapter: 4, keyword: "Alexander Fleming", association: "Discovered penicillin (1928)", note: "Scottish doctor. Revolutionised medicine." },
-      { chapter: 4, keyword: "Tim Berners-Lee", association: "Invented the World Wide Web (1989)", note: "While working at CERN." },
-      { chapter: 4, keyword: "John Logie Baird", association: "Invented the television (1920s)", note: "Scottish engineer. First TV broadcast between London and Glasgow." },
-      { chapter: 4, keyword: "James Watt", association: "Improved the steam engine", note: "Key figure of the Industrial Revolution." },
-      { chapter: 4, keyword: "Alan Turing", association: "Codebreaking (Enigma) + computing pioneer", note: "Worked at Bletchley Park during WWII." },
-      { chapter: 4, keyword: "Isambard Kingdom Brunel", association: "Engineer – bridges, railways, ships", note: "Great Western Railway, SS Great Britain, Clifton Suspension Bridge." },
-      { chapter: 4, keyword: "Florence Nightingale", association: "Founder of modern nursing", note: "Famous for work in the Crimean War." },
-      { chapter: 4, keyword: "Concorde", association: "Britain + France · first flew 1969", note: "World’s only supersonic passenger aircraft. Retired 2003." },
-      { chapter: 4, keyword: "Francis Crick", association: "Co-discovered structure of DNA (1953)", note: "With James Watson (and others) at Cambridge." },
-      { chapter: 4, keyword: "Sir Frank Whittle", association: "Invented the jet engine", note: "British engineer, 1930s–40s." },
-
-      // Sports & Athletes
-      { chapter: 4, keyword: "1966 World Cup", association: "England won the football World Cup", note: "Captain: Bobby Moore. Only time England have won it." },
-      { chapter: 4, keyword: "Bobby Moore", association: "England football captain 1966", note: "Led England to World Cup victory." },
-      { chapter: 4, keyword: "Sir Roger Bannister", association: "First man to run a mile under 4 minutes (1954)", note: "Historic athletics achievement." },
-      { chapter: 4, keyword: "Sir Andy Murray", association: "Scottish tennis player · Wimbledon 2013 & 2016", note: "Also Olympic gold and US Open champion." },
-      { chapter: 4, keyword: "Baroness Tanni Grey-Thompson", association: "Paralympian · 16 medals (11 gold)", note: "Also won the London Marathon six times." },
-      { chapter: 4, keyword: "Sir Ian Botham", association: "England cricket all-rounder", note: "Held many batting and bowling records." },
-      { chapter: 4, keyword: "Sir Jackie Stewart", association: "Scottish Formula 1 driver · 3× world champion", note: "One of Britain’s most successful racing drivers." },
-      { chapter: 4, keyword: "Olympics hosted by UK", association: "1908, 1948 and 2012 (London)", note: "2012: Team GB finished 3rd in the medal table." },
-      { chapter: 4, keyword: "Wimbledon", association: "Oldest tennis tournament in the world (1877)", note: "Held in London every summer." },
-      { chapter: 4, keyword: "The Ashes", association: "Cricket series: England vs Australia", note: "Most famous cricket competition involving England." },
-      { chapter: 4, keyword: "Six Nations", association: "Rugby Union championship", note: "England, Scotland, Wales, Ireland, France, Italy." },
-
-      // Culture & Arts
-      { chapter: 4, keyword: "William Shakespeare", association: "Playwright · Romeo and Juliet, Hamlet, Macbeth", note: "1564–1616. Globe Theatre. Stratford-upon-Avon." },
-      { chapter: 4, keyword: "Jane Austen", association: "Novelist · Pride and Prejudice", note: "Also Sense and Sensibility. Early 19th century." },
-      { chapter: 4, keyword: "Charles Dickens", association: "Victorian novelist · Oliver Twist, A Christmas Carol", note: "Wrote about social conditions in industrial Britain." },
-      { chapter: 4, keyword: "Robert Burns", association: "Scottish national poet · Auld Lang Syne", note: "Known as “the Bard”." },
-      { chapter: 4, keyword: "Sir Arthur Conan Doyle", association: "Creator of Sherlock Holmes", note: "Famous detective stories." },
-      { chapter: 4, keyword: "J.K. Rowling", association: "Harry Potter series", note: "One of the world’s best-selling authors." },
-      { chapter: 4, keyword: "The Beatles", association: "Most famous British pop/rock band", note: "From Liverpool. Global cultural impact in the 1960s." },
-
-      // ========== Chapter 5: The UK Government, the Law and Your Role ==========
-      { chapter: 5, keyword: "House of Commons", association: "650 elected MPs · holds real power", note: "Elected chamber of Parliament." },
-      { chapter: 5, keyword: "House of Lords", association: "Appointed members · revises legislation", note: "Not elected. Includes life peers, bishops, etc." },
-      { chapter: 5, keyword: "Prime Minister", association: "Leader of the party with majority in Commons", note: "Head of the UK government." },
-      { chapter: 5, keyword: "Speaker", association: "Chairs debates in the House of Commons", note: "Must remain politically neutral." },
-      { chapter: 5, keyword: "Devolution (1999)", association: "Scottish Parliament, Senedd (Wales), NI Assembly", note: "Transfer of powers from Westminster to the nations." },
-      { chapter: 5, keyword: "Senedd", association: "Welsh Parliament", note: "Devolved legislature for Wales (established 1999)." },
-      { chapter: 5, keyword: "Jury", association: "12 members in a Crown Court", note: "Decide guilt or innocence in serious criminal cases." },
-      { chapter: 5, keyword: "Voting age", association: "18 years old", note: "Minimum age to vote in UK elections." },
-      { chapter: 5, keyword: "Fundamental principles", association: "Democracy · Rule of law · Individual liberty · Tolerance · Participation", note: "Core British values (often remembered as DRIT-P)." },
+    const themes = [
+      {
+        id: "nations",
+        title: "四國一覽 (Nations of the UK)",
+        keyPoint: "每個國家：Patron Saint + 國慶日 + 國花/標誌 + 首都。Union Flag 冇 Welsh dragon。",
+        items: [
+          { k: "England", v: "St George · 23 April · Rose · London" },
+          { k: "Scotland", v: "St Andrew · 30 November · Thistle · Edinburgh · Hogmanay (31 Dec)" },
+          { k: "Wales", v: "St David · 1 March · Daffodil / Leek · Cardiff" },
+          { k: "Northern Ireland", v: "St Patrick · 17 March · Shamrock · Belfast" },
+          { k: "Union Flag / Union Jack", v: "St George + St Andrew + St Patrick crosses (no Welsh dragon)" },
+          { k: "Great Britain vs UK", v: "GB = England + Scotland + Wales | UK = GB + Northern Ireland" },
+          { k: "Loch Lomond & The Trossachs", v: "National Park located in Scotland" },
+          { k: "Stonehenge", v: "Prehistoric monument in Wiltshire, England" }
+        ],
+        extras: [
+          { k: "Scottish Parliament", v: "129 members (MSPs)" },
+          { k: "Northern Ireland Assembly", v: "90 members (MLAs)" },
+          { k: "Welsh Senedd", v: "Old handbook: 60 members · From May 2026: 96 members" }
+        ]
+      },
+      {
+        id: "romans",
+        title: "羅馬時期 (Romans in Britain)",
+        keyPoint: "Hadrian’s Wall 邊個起、目的、相關 forts；Boudicca 對抗羅馬。",
+        items: [
+          { k: "Hadrian’s Wall", v: "Emperor Hadrian · keep out the Picts · forts: Housesteads & Vindolanda" },
+          { k: "Boudicca", v: "Queen of the Iceni (eastern England) · fought the Romans" },
+          { k: "Romans left", v: "Around AD 410 (after ~400 years)" }
+        ]
+      },
+      {
+        id: "tudors",
+        title: "Henry VIII & Tudors",
+        keyPoint: "為離婚第一任妻子建立 Church of England；Anne Boleyn 喺 Tower of London 被斬；Elizabeth I 老豆；Reformation。",
+        items: [
+          { k: "Why Church of England?", v: "Henry wanted to divorce Catherine of Aragon → Pope refused → established Church of England" },
+          { k: "Six wives mnemonic", v: "Divorced – Beheaded – Died – Divorced – Beheaded – Survived" },
+          { k: "1. Catherine of Aragon", v: "Divorced" },
+          { k: "2. Anne Boleyn", v: "Beheaded at Tower of London · mother of Elizabeth I" },
+          { k: "3. Jane Seymour", v: "Died (after giving birth to Edward VI)" },
+          { k: "4. Anne of Cleves", v: "Divorced" },
+          { k: "5. Catherine Howard", v: "Beheaded" },
+          { k: "6. Catherine Parr", v: "Survived (outlived Henry)" },
+          { k: "Elizabeth I", v: "Daughter of Henry VIII & Anne Boleyn · defeated Spanish Armada 1588 · never married" },
+          { k: "Reformation", v: "Movement against the authority of the Pope (Henry VIII’s time)" }
+        ]
+      },
+      {
+        id: "civilwar",
+        title: "英國內戰 (Civil War) & Glorious Revolution",
+        keyPoint: "Cavaliers (國王) vs Roundheads (國會)；Charles I 被斬；Cromwell = Lord Protector；Glorious Revolution → Constitutional Monarchy。",
+        items: [
+          { k: "Civil War sides", v: "Cavaliers = supported the King | Roundheads = supported Parliament" },
+          { k: "Charles I", v: "Believed in Divine Right of Kings · executed 1649 → England became a republic" },
+          { k: "Oliver Cromwell", v: "Leader of the Roundheads · became Lord Protector (not king)" },
+          { k: "Restoration", v: "1660 – monarchy restored under Charles II" },
+          { k: "Glorious Revolution", v: "1688 · James II replaced by William & Mary · beginning of constitutional monarchy" }
+        ]
+      },
+      {
+        id: "votes",
+        title: "婦女投票權 (Women’s Suffrage)",
+        keyPoint: "Emmeline Pankhurst = suffragettes 領袖；1918（30歲+）→ 1928（同男性 21歲）。",
+        items: [
+          { k: "Emmeline Pankhurst", v: "Leader of the suffragettes (women’s right to vote)" },
+          { k: "1918", v: "Women over 30 got the vote (and right to stand for Parliament)" },
+          { k: "1928", v: "Women got the vote at 21 – same as men" }
+        ]
+      },
+      {
+        id: "science",
+        title: "科學家 & 發明家",
+        keyPoint: "多數一對一：名 + 最出名成就。",
+        items: [
+          { k: "Isaac Newton", v: "Laws of motion & gravity · Principia Mathematica" },
+          { k: "Charles Darwin", v: "Theory of evolution · On the Origin of Species (1859)" },
+          { k: "Alexander Fleming", v: "Discovered penicillin (1928) · Scottish" },
+          { k: "Tim Berners-Lee", v: "Invented the World Wide Web (1989) · CERN" },
+          { k: "John Logie Baird", v: "Invented television · first broadcast London–Glasgow" },
+          { k: "Alan Turing", v: "Codebreaking (Enigma) + computing pioneer · Bletchley Park" },
+          { k: "James Watt", v: "Improved the steam engine · Industrial Revolution" },
+          { k: "Isambard Kingdom Brunel", v: "Engineer: bridges, railways, ships (GWR, SS Great Britain)" },
+          { k: "Florence Nightingale", v: "Founder of modern nursing · Crimean War" },
+          { k: "Francis Crick", v: "Co-discovered DNA structure (1953) with Watson" },
+          { k: "Sir Frank Whittle", v: "Invented the jet engine" }
+        ]
+      },
+      {
+        id: "sport",
+        title: "運動員 & 賽事",
+        keyPoint: "1966 World Cup、Olympics 主辦年、主要賽事地點好常出。",
+        items: [
+          { k: "1966 World Cup", v: "England won · Captain Bobby Moore · only time England won it" },
+          { k: "Bobby Moore", v: "England football captain 1966" },
+          { k: "Sir Roger Bannister", v: "First man to run a mile under 4 minutes (1954)" },
+          { k: "Sir Andy Murray", v: "Scottish · Wimbledon 2013 & 2016 · Olympic gold" },
+          { k: "Baroness Tanni Grey-Thompson", v: "Paralympian · 16 medals (11 gold) · 6× London Marathon" },
+          { k: "Sir Chris Hoy", v: "Scottish cyclist · 6 Olympic golds" },
+          { k: "Olympics hosted by UK", v: "1908, 1948, 2012 (all London)" },
+          { k: "The Boat Race", v: "Oxford vs Cambridge · annual rowing race on the River Thames" },
+          { k: "Grand National", v: "Famous horse race at Aintree (near Liverpool)" },
+          { k: "Scottish Grand National", v: "Takes place at Ayr Racecourse" }
+        ]
+      },
+      {
+        id: "culture",
+        title: "文化、文學、音樂、節日、建築",
+        keyPoint: "Hogmanay、Diwali、Tower of London / Beefeaters、文學家同音樂家、Remembrance Day。",
+        items: [
+          { k: "Hogmanay", v: "Scotland – 31 December (New Year’s Eve)" },
+          { k: "Diwali", v: "Hindus & Sikhs · Festival of Lights · Oct/Nov · lasts 5 days" },
+          { k: "Remembrance Day", v: "11 November · poppies · remembers those who died in the wars" },
+          { k: "Tower of London", v: "Yeoman Warders (Beefeaters) give tours · Crown Jewels kept here · started by William the Conqueror" },
+          { k: "Big Ben / Elizabeth Tower", v: "Clock tower at the Houses of Parliament · Big Ben is the bell" },
+          { k: "Sir Arthur Conan Doyle", v: "Creator of Sherlock Holmes" },
+          { k: "Geoffrey Chaucer", v: "The Canterbury Tales · ‘father of English literature/poetry’ · first writer buried in Poets’ Corner, Westminster Abbey" },
+          { k: "Edward Elgar", v: "Composer · Pomp and Circumstance / Land of Hope and Glory · Enigma Variations" },
+          { k: "London West End", v: "Also known as ‘Theatreland’ · famous for theatres" },
+          { k: "The Proms", v: "Eight-week summer classical music season · Royal Albert Hall" },
+          { k: "The Beatles", v: "Most famous British pop/rock band · Liverpool" },
+          { k: "J.K. Rowling", v: "Harry Potter series" },
+          { k: "Four Weddings and a Funeral", v: "1994 film directed by Mike Newell" }
+        ]
+      },
+      {
+        id: "gov",
+        title: "政府、法律、責任",
+        keyPoint: "責任、投票年齡、unwritten constitution、Magna Carta、Bill of Rights、Jury service。",
+        items: [
+          { k: "Two key responsibilities", v: "Look after yourself & your family · Look after the area you live in and the environment" },
+          { k: "Voting age", v: "18 (UK general elections)" },
+          { k: "British constitution", v: "Unwritten (not in a single document)" },
+          { k: "Constitutional monarchy", v: "Monarch is head of state but political power lies with elected Parliament" },
+          { k: "Magna Carta (1215)", v: "King John forced to sign · king no longer above the law" },
+          { k: "Bill of Rights (1689)", v: "Limits monarch’s power · confirms rights of Parliament" },
+          { k: "Habeas Corpus", v: "No one can be held prisoner unlawfully · right to a court hearing" },
+          { k: "Speaker", v: "Chairs debates in the House of Commons" },
+          { k: "Jury service", v: "Compulsory for most adults aged 18–75" },
+          { k: "Small claims (England & Wales)", v: "Claims up to £10,000 can use the small claims procedure" },
+          { k: "Margaret Thatcher", v: "First woman Prime Minister (1979–1990) · 戴卓爾夫人" }
+        ]
+      },
+      {
+        id: "history",
+        title: "其他重要歷史事件",
+        keyPoint: "日期 + 事件一齊記。1066、1215、1707、1801、1918、1948 特別高頻。",
+        items: [
+          { k: "Alfred the Great", v: "Defeated the Vikings · united Anglo-Saxon kingdoms" },
+          { k: "1066", v: "Battle of Hastings · Norman Conquest · William the Conqueror defeats Harold" },
+          { k: "1215", v: "Magna Carta signed" },
+          { k: "1348", v: "Black Death (Middle Ages) arrived · killed large proportion of population" },
+          { k: "1485", v: "Battle of Bosworth · start of Tudors · ends Wars of the Roses" },
+          { k: "1603", v: "Union of the Crowns · James VI of Scotland becomes James I of England" },
+          { k: "1605", v: "Gunpowder Plot (Guy Fawkes) · origin of Bonfire Night" },
+          { k: "1707", v: "Act of Union (England + Scotland) → Kingdom of Great Britain" },
+          { k: "1801", v: "Act of Union with Ireland → United Kingdom of Great Britain and Ireland" },
+          { k: "1918", v: "End of World War I · women over 30 get the vote" },
+          { k: "Battle of Britain (1940)", v: "RAF defeated the German Luftwaffe · Winston Churchill was Prime Minister" },
+          { k: "Winston Churchill", v: "Prime Minister during most of WWII · famous wartime speeches" },
+          { k: "NHS established", v: "1948" },
+          { k: "Windrush", v: "1948 · ship that brought workers from the Caribbean · post-war immigration" },
+          { k: "Wars of the Roses", v: "Lancaster (red rose) vs York (white rose) · ended 1485 at Bosworth" }
+        ],
+        extras: [
+          { k: "Commonwealth", v: "Voluntary association of independent countries, most of which were formerly part of the British Empire" }
+        ]
+      },
+      {
+        id: "values",
+        title: "英國核心價值觀 (British Values)",
+        keyPoint: "Chapter 1 重點：所有住喺英國嘅人都應該尊重同支持呢啲價值。",
+        items: [
+          { k: "Fundamental British values", v: "Democracy · Rule of law · Individual liberty · Mutual respect and tolerance of those with different faiths and beliefs" },
+          { k: "Democracy", v: "People elect their representatives · government is accountable" },
+          { k: "Rule of law", v: "Everyone is equal under the law · including those in power" },
+          { k: "Individual liberty", v: "Freedom of speech, thought, religion and association" },
+          { k: "Mutual respect & tolerance", v: "Respect the rights of others to hold different beliefs and opinions" }
+        ]
+      }
     ];
 
-    // State
-    let currentChapter = "all";
-    let searchTerm = "";
+    const main = document.getElementById('main');
+    const empty = document.getElementById('empty');
+    const searchInput = document.getElementById('search');
 
-    const mainEl = document.getElementById("main");
-    const statsEl = document.getElementById("stats");
-    const emptyEl = document.getElementById("empty");
-    const searchInput = document.getElementById("search");
+    function render(filter = 'all', query = '') {
+      main.innerHTML = '';
+      let hasResults = false;
+      const q = query.toLowerCase().trim();
 
-    const chapterTitles = {
-      2: "Chapter 2 · What is the UK?",
-      3: "Chapter 3 · A Long and Illustrious History",
-      4: "Chapter 4 · A Modern, Thriving Society",
-      5: "Chapter 5 · The UK Government, the Law and Your Role"
-    };
+      themes.forEach(theme => {
+        if (filter !== 'all' && theme.id !== filter) return;
 
-    function render() {
-      const filtered = cardsData.filter(card => {
-        const matchChapter = currentChapter === "all" || card.chapter === Number(currentChapter);
-        const q = searchTerm.toLowerCase().trim();
-        const matchSearch = !q ||
-          card.keyword.toLowerCase().includes(q) ||
-          card.association.toLowerCase().includes(q) ||
-          (card.note && card.note.toLowerCase().includes(q));
-        return matchChapter && matchSearch;
-      });
+        const mainItems = theme.items.filter(item => !q || (item.k + ' ' + item.v + ' ' + theme.title).toLowerCase().includes(q));
+        const extraItems = (theme.extras || []).filter(item => !q || (item.k + ' ' + item.v + ' ' + theme.title).toLowerCase().includes(q));
+        if (mainItems.length === 0 && extraItems.length === 0) return;
+        hasResults = true;
 
-      statsEl.textContent = `${filtered.length} card${filtered.length !== 1 ? "s" : ""}`;
+        const section = document.createElement('section');
+        section.className = 'theme-block p-4 shadow-sm';
 
-      if (filtered.length === 0) {
-        mainEl.innerHTML = "";
-        emptyEl.style.display = "block";
-        return;
-      }
-      emptyEl.style.display = "none";
-
-      // Group by chapter
-      const byChapter = {};
-      filtered.forEach(c => {
-        if (!byChapter[c.chapter]) byChapter[c.chapter] = [];
-        byChapter[c.chapter].push(c);
-      });
-
-      let html = "";
-      Object.keys(byChapter).sort((a,b) => a - b).forEach(ch => {
-        const list = byChapter[ch];
-        html += `
-          <section class="chapter-section" data-chapter="${ch}">
-            <h2>${chapterTitles[ch]} <span>${list.length}</span></h2>
-            <div class="cards-grid">
-              ${list.map(card => `
-                <div class="card" data-keyword="${card.keyword}">
-                  <div class="card-inner">
-                    <div class="card-front">
-                      <div class="keyword">${card.keyword}</div>
-                      <div class="hint">Tap to reveal</div>
-                      <span class="tag">Ch.${card.chapter}</span>
-                    </div>
-                    <div class="card-back">
-                      <div class="association">${card.association}</div>
-                      <div class="note">${card.note || ""}</div>
-                    </div>
-                  </div>
-                </div>
-              `).join("")}
-            </div>
-          </section>
+        let html = `
+          <h2 class="text-base font-bold text-[#1e3a5f] mb-1">${theme.title}</h2>
+          <div class="key-point text-sm p-2.5 rounded mb-3">${theme.keyPoint}</div>
+          <div class="space-y-0">
         `;
-      });
 
-      mainEl.innerHTML = html;
-
-      // Attach flip listeners
-      document.querySelectorAll(".card").forEach(card => {
-        card.addEventListener("click", () => {
-          card.classList.toggle("flipped");
+        mainItems.forEach(item => {
+          html += `
+            <div class="item-row py-2 flex gap-3 text-sm">
+              <div class="font-medium text-[#1e3a5f] min-w-[130px] sm:min-w-[160px] shrink-0">${item.k}</div>
+              <div class="text-gray-700">${item.v}</div>
+            </div>
+          `;
         });
+
+        if (extraItems.length > 0) {
+          html += `<div class="extra-label">Handbook extras / less frequent in mocks</div>`;
+          extraItems.forEach(item => {
+            html += `
+              <div class="item-row py-2 flex gap-3 text-sm opacity-80">
+                <div class="font-medium text-[#1e3a5f] min-w-[130px] sm:min-w-[160px] shrink-0">${item.k}</div>
+                <div class="text-gray-700">${item.v}</div>
+              </div>
+            `;
+          });
+        }
+
+        html += `</div>`;
+        section.innerHTML = html;
+        main.appendChild(section);
       });
+
+      empty.classList.toggle('hidden', hasResults);
     }
 
-    // Filters
-    document.getElementById("filters").addEventListener("click", e => {
-      if (e.target.classList.contains("filter-btn")) {
-        document.querySelectorAll(".filter-btn").forEach(b => b.classList.remove("active"));
-        e.target.classList.add("active");
-        currentChapter = e.target.dataset.chapter;
-        render();
-      }
+    document.getElementById('filters').addEventListener('click', e => {
+      if (!e.target.classList.contains('filter-btn')) return;
+      document.querySelectorAll('.filter-btn').forEach(b => {
+        b.classList.remove('active', 'bg-[#1e3a5f]', 'text-white');
+        b.classList.add('bg-white', 'border');
+      });
+      e.target.classList.add('active', 'bg-[#1e3a5f]', 'text-white');
+      e.target.classList.remove('bg-white', 'border');
+      render(e.target.dataset.filter, searchInput.value);
     });
 
-    // Search
-    searchInput.addEventListener("input", e => {
-      searchTerm = e.target.value;
-      render();
+    searchInput.addEventListener('input', () => {
+      const active = document.querySelector('.filter-btn.active');
+      render(active ? active.dataset.filter : 'all', searchInput.value);
     });
 
-    // Initial render
     render();
   </script>
 </body>
