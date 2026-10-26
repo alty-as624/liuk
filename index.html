@@ -16,7 +16,6 @@
   </style>
 </head>
 <body class="min-h-screen text-gray-800">
-  <!-- Sticky top bar -->
   <div class="sticky-bar bg-[#1e3a5f] text-white text-center py-2 px-3 shadow">
     <a href="https://domicch.github.io/life-in-uk/" target="_blank" rel="noopener"
        class="text-sm font-medium underline underline-offset-2 hover:text-blue-200">
@@ -26,7 +25,7 @@
 
   <header class="bg-[#1e3a5f] text-white py-4 px-4 text-center">
     <h1 class="text-xl sm:text-2xl font-bold">Life in the UK – Thematic Keywords</h1>
-    <p class="text-sm opacity-90 mt-1">主題關聯 · 一眼睇晒 · 考試常問重點</p>
+    <p class="text-sm opacity-90 mt-1">主題關聯 · 一眼睇晒 · 覆蓋 mock tests 內容</p>
   </header>
 
   <div class="max-w-3xl mx-auto px-3 py-5">
@@ -39,10 +38,11 @@
       <button data-filter="romans" class="filter-btn px-3 py-1 rounded-full bg-white border">羅馬</button>
       <button data-filter="tudors" class="filter-btn px-3 py-1 rounded-full bg-white border">Henry VIII</button>
       <button data-filter="civilwar" class="filter-btn px-3 py-1 rounded-full bg-white border">內戰</button>
+      <button data-filter="fire" class="filter-btn px-3 py-1 rounded-full bg-white border">1666大火</button>
       <button data-filter="votes" class="filter-btn px-3 py-1 rounded-full bg-white border">婦女投票</button>
       <button data-filter="science" class="filter-btn px-3 py-1 rounded-full bg-white border">科學家</button>
       <button data-filter="sport" class="filter-btn px-3 py-1 rounded-full bg-white border">運動</button>
-      <button data-filter="culture" class="filter-btn px-3 py-1 rounded-full bg-white border">文化節日</button>
+      <button data-filter="culture" class="filter-btn px-3 py-1 rounded-full bg-white border">文化文學</button>
       <button data-filter="gov" class="filter-btn px-3 py-1 rounded-full bg-white border">政府法律</button>
       <button data-filter="history" class="filter-btn px-3 py-1 rounded-full bg-white border">其他歷史</button>
       <button data-filter="values" class="filter-btn px-3 py-1 rounded-full bg-white border">價值觀</button>
@@ -53,15 +53,15 @@
   </div>
 
   <footer class="text-center text-xs text-gray-500 py-8 px-4">
-    Based on official handbook + high-frequency items from 18 mock tests · For personal revision only
+    Based on official handbook + content from 18 mock tests · For personal revision only
   </footer>
 
   <script>
     const themes = [
       {
         id: "nations",
-        title: "四國一覽 (Nations of the UK)",
-        keyPoint: "每個國家：Patron Saint + 國慶日 + 國花/標誌 + 首都。Union Flag 冇 Welsh dragon。",
+        title: "四國一覽 + Territories (Nations & Territories)",
+        keyPoint: "Patron Saint + 國慶日 + 國花 + 首都。Overseas Territories 同 Crown Dependencies 都係 linked to UK/Crown 但唔係 UK 一部分。",
         items: [
           { k: "England", v: "St George · 23 April · Rose · London" },
           { k: "Scotland", v: "St Andrew · 30 November · Thistle · Edinburgh · Hogmanay (31 Dec)" },
@@ -70,11 +70,13 @@
           { k: "Union Flag / Union Jack", v: "St George + St Andrew + St Patrick crosses (no Welsh dragon)" },
           { k: "Great Britain vs UK", v: "GB = England + Scotland + Wales | UK = GB + Northern Ireland" },
           { k: "Loch Lomond & The Trossachs", v: "National Park located in Scotland" },
-          { k: "Stonehenge", v: "Prehistoric monument in Wiltshire, England" }
+          { k: "Stonehenge", v: "Prehistoric monument in Wiltshire, England" },
+          { k: "British Overseas Territories", v: "Linked to the UK but not part of it · e.g. St Helena, Falkland Islands, Gibraltar, Cayman Islands, Bermuda" },
+          { k: "Crown Dependencies", v: "Isle of Man · Channel Islands (Jersey & Guernsey) · Linked to the Crown but not part of the UK" }
         ],
         extras: [
           { k: "Scottish Parliament", v: "129 members (MSPs)" },
-          { k: "Northern Ireland Assembly", v: "90 members (MLAs)" },
+          { k: "Northern Ireland Assembly", v: "90 members (MLAs) · Has been suspended several times by the UK government" },
           { k: "Welsh Senedd", v: "Old handbook: 60 members · From May 2026: 96 members" }
         ]
       },
@@ -102,7 +104,8 @@
           { k: "5. Catherine Howard", v: "Beheaded" },
           { k: "6. Catherine Parr", v: "Survived (outlived Henry)" },
           { k: "Elizabeth I", v: "Daughter of Henry VIII & Anne Boleyn · defeated Spanish Armada 1588 · never married" },
-          { k: "Reformation", v: "Movement against the authority of the Pope (Henry VIII’s time)" }
+          { k: "Reformation", v: "Movement against the authority of the Pope (Henry VIII’s time)" },
+          { k: "Scotland 1560", v: "Established a Protestant church (Scottish Reformation)" }
         ]
       },
       {
@@ -115,6 +118,19 @@
           { k: "Oliver Cromwell", v: "Leader of the Roundheads · became Lord Protector (not king)" },
           { k: "Restoration", v: "1660 – monarchy restored under Charles II" },
           { k: "Glorious Revolution", v: "1688 · James II replaced by William & Mary · beginning of constitutional monarchy" }
+        ]
+      },
+      {
+        id: "fire",
+        title: "Great Fire of London 1666",
+        keyPoint: "開始地點、破壞範圍、重建人物同結果。常同 St Paul’s / Wren 一齊考。",
+        items: [
+          { k: "Started", v: "2 September 1666 · bakery on Pudding Lane (Thomas Farriner)" },
+          { k: "Duration", v: "About 4–5 days" },
+          { k: "Destroyed", v: "Around 13,200 houses · 87 churches · Old St Paul’s Cathedral" },
+          { k: "St Paul’s Cathedral", v: "Destroyed in the fire · rebuilt by Sir Christopher Wren (completed 1711)" },
+          { k: "Sir Christopher Wren", v: "Architect who designed the new St Paul’s and many other churches after the fire" },
+          { k: "Aftermath", v: "Wider streets · more buildings of brick and stone instead of wood" }
         ]
       },
       {
@@ -165,27 +181,29 @@
       {
         id: "culture",
         title: "文化、文學、音樂、節日、建築",
-        keyPoint: "Hogmanay、Diwali、Tower of London / Beefeaters、文學家同音樂家、Remembrance Day。",
+        keyPoint: "Hogmanay、Diwali、Remembrance Day、文學家同作品、音樂家。",
         items: [
           { k: "Hogmanay", v: "Scotland – 31 December (New Year’s Eve)" },
           { k: "Diwali", v: "Hindus & Sikhs · Festival of Lights · Oct/Nov · lasts 5 days" },
           { k: "Remembrance Day", v: "11 November · poppies · remembers those who died in the wars" },
-          { k: "Tower of London", v: "Yeoman Warders (Beefeaters) give tours · Crown Jewels kept here · started by William the Conqueror" },
+          { k: "Tower of London", v: "Yeoman Warders (Beefeaters) give tours · Crown Jewels · started by William the Conqueror" },
           { k: "Big Ben / Elizabeth Tower", v: "Clock tower at the Houses of Parliament · Big Ben is the bell" },
           { k: "Sir Arthur Conan Doyle", v: "Creator of Sherlock Holmes" },
           { k: "Geoffrey Chaucer", v: "The Canterbury Tales · ‘father of English literature/poetry’ · first writer buried in Poets’ Corner, Westminster Abbey" },
+          { k: "William Wordsworth", v: "Wrote about daffodils · poem ‘I Wandered Lonely as a Cloud’" },
           { k: "Edward Elgar", v: "Composer · Pomp and Circumstance / Land of Hope and Glory · Enigma Variations" },
           { k: "London West End", v: "Also known as ‘Theatreland’ · famous for theatres" },
           { k: "The Proms", v: "Eight-week summer classical music season · Royal Albert Hall" },
           { k: "The Beatles", v: "Most famous British pop/rock band · Liverpool" },
           { k: "J.K. Rowling", v: "Harry Potter series" },
-          { k: "Four Weddings and a Funeral", v: "1994 film directed by Mike Newell" }
+          { k: "Four Weddings and a Funeral", v: "1994 film directed by Mike Newell" },
+          { k: "National Trust", v: "Charity that protects historic buildings and the countryside" }
         ]
       },
       {
         id: "gov",
-        title: "政府、法律、責任",
-        keyPoint: "責任、投票年齡、unwritten constitution、Magna Carta、Bill of Rights、Jury service。",
+        title: "政府、法律、責任、媒體",
+        keyPoint: "責任、投票年齡、unwritten constitution、Magna Carta、Jury service、媒體平衡。",
         items: [
           { k: "Two key responsibilities", v: "Look after yourself & your family · Look after the area you live in and the environment" },
           { k: "Voting age", v: "18 (UK general elections)" },
@@ -197,6 +215,7 @@
           { k: "Speaker", v: "Chairs debates in the House of Commons" },
           { k: "Jury service", v: "Compulsory for most adults aged 18–75" },
           { k: "Small claims (England & Wales)", v: "Claims up to £10,000 can use the small claims procedure" },
+          { k: "Media balance", v: "By law, radio and television must give balanced coverage and equal time to rival political viewpoints" },
           { k: "Margaret Thatcher", v: "First woman Prime Minister (1979–1990) · 戴卓爾夫人" }
         ]
       },
@@ -216,13 +235,11 @@
           { k: "1801", v: "Act of Union with Ireland → United Kingdom of Great Britain and Ireland" },
           { k: "1918", v: "End of World War I · women over 30 get the vote" },
           { k: "Battle of Britain (1940)", v: "RAF defeated the German Luftwaffe · Winston Churchill was Prime Minister" },
-          { k: "Winston Churchill", v: "Prime Minister during most of WWII · famous wartime speeches" },
+          { k: "Winston Churchill", v: "Prime Minister during most of WWII · famous wartime speeches · voted greatest Briton of all time in 2002 BBC poll" },
           { k: "NHS established", v: "1948" },
           { k: "Windrush", v: "1948 · ship that brought workers from the Caribbean · post-war immigration" },
-          { k: "Wars of the Roses", v: "Lancaster (red rose) vs York (white rose) · ended 1485 at Bosworth" }
-        ],
-        extras: [
-          { k: "Commonwealth", v: "Voluntary association of independent countries, most of which were formerly part of the British Empire" }
+          { k: "Wars of the Roses", v: "Lancaster (red rose) vs York (white rose) · ended 1485 at Bosworth" },
+          { k: "Commonwealth", v: "Voluntary association of independent countries, most formerly part of the British Empire" }
         ]
       },
       {
